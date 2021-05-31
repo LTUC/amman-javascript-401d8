@@ -1,25 +1,24 @@
 // dependencies
-var async = require('async');
-var AWS = require('aws-sdk');
-var gm = require('gm').subClass({ imageMagick: true }); // Enable ImageMagick integration.
-var util = require('util');
+const async = require('async');
+const AWS = require('aws-sdk');
+const gm = require('gm').subClass({ imageMagick: true }); // Enable ImageMagick integration.
+const util = require('util');
 
 // constants
-var MAX_WIDTH  = 100;
-var MAX_HEIGHT = 100;
+const MAX_WIDTH  = 100;
+const MAX_HEIGHT = 100;
 
 // get reference to S3 client
-var s3 = new AWS.S3();
+const s3 = new AWS.S3();
 
 exports.handler = function(event, context, callback) {
   // Read options from the event.
   console.log('Reading options from event:\n', util.inspect(event, {depth: 5}));
-  var srcBucket = event.Records[0].s3.bucket.name;
+  let srcBucket = event.Records[0].s3.bucket.name;
   // Object key may have spaces or unicode non-ASCII characters.
-  var srcKey    =
-    decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
-  var dstBucket = srcBucket + 'resized';
-  var dstKey    = 'resized-' + srcKey;
+  let srcKey    = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
+  let dstBucket = srcBucket + 'resized';
+  let dstKey    = 'resized-' + srcKey;
 
   // Sanity check: validate that source and destination are different buckets.
   if (srcBucket == dstBucket) {
@@ -28,12 +27,12 @@ exports.handler = function(event, context, callback) {
   }
 
   // Infer the image type.
-  var typeMatch = srcKey.match(/\.([^.]*)$/);
+  let typeMatch = srcKey.match(/\.([^.]*)$/);
   if (!typeMatch) {
     callback('Could not determine the image type.');
     return;
   }
-  var imageType = typeMatch[1].toLowerCase();
+  let imageType = typeMatch[1].toLowerCase();
   if (imageType != 'jpg' && imageType != 'png') {
     callback(`Unsupported image type: ${imageType}`);
     return;
@@ -52,12 +51,12 @@ exports.handler = function(event, context, callback) {
     function transform(response, next) {
       gm(response.Body).size(function(err, size) {
         // Infer the scaling factor to avoid stretching the image unnaturally.
-        var scalingFactor = Math.min(
+        let scalingFactor = Math.min(
           MAX_WIDTH / size.width,
           MAX_HEIGHT / size.height,
         );
-        var width  = scalingFactor * size.width;
-        var height = scalingFactor * size.height;
+        let width  = scalingFactor * size.width;
+        let height = scalingFactor * size.height;
 
         // Transform the image buffer in memory.
         this.resize(width, height)
