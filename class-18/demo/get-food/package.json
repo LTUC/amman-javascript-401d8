@@ -1,0 +1,15 @@
+{
+  "name": "get-food",
+  "version": "1.0.0",
+  "description": "",
+  "main": "food-schema.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Rawan Nujoom <rawan.nujoom@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "dynamoose": "^2.7.3"
+  }
+}
