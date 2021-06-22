@@ -1,0 +1,15 @@
+html, body, #root {
+    height: 100vh;
+    margin: 0;
+}
+.light {
+    background-color: beige;
+    color: chocolate;
+    height: 100vh;
+}
+
+.dark {
+    background-color: rgb(63, 37, 19);
+    color: beige;
+    height: 100vh;
+}
