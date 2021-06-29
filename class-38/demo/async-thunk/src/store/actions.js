@@ -8,7 +8,7 @@ export const getRemoteData = () => (dispatch, state) => {
     console.log("inside getRemoteData");
     console.log(dispatch);
     console.log(state)
-    superagent.get(api).then(res=> {
+   return superagent.get(api).then(res=> {
         dispatch(getAction(res.body));
     });
 }
